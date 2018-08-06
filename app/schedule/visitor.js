@@ -1,27 +1,36 @@
 'use strict';
 
 const {
-  Subscription
+  Subscription,
 } = require('egg');
-const fs = require('mz/fs');
-const path = require('path');
+
+const task = require('../controller/task');
 
 class Visitor extends Subscription {
 
   static get schedule() {
     // run at every 1h.
     return {
-      //cron: '0 0 */1 * * *',
-      cron: '*/30 * * * * *',
+      cron: '0 0 */1 * * *',
       type: 'worker',
       immediate: true,
     };
   }
 
   async subscribe() {
-    console.log(new Date().toISOString());
+    await task();
   }
 
 }
 
 module.exports = Visitor;
+
+if (module.parent) {
+  return;
+}
+
+(async () => {
+  console.log('debug mode');
+
+  await task();
+})();

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <style>
+body {
+  font-family: "Segoe UI","Open Sans","Helvetica Neue",sans-serif;
+  letter-spacing: 0;
+  font-weight: 400;
+  font-style: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+#feedit-con {
+  font-weight: 400;
+  font-style: normal;
+  font-size: 21px;
+  width: 740px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+#feedit-content {
+  text-align: justify;
+}
+#feedit-date {
+
+}
+#feedit-link {
+}
+h1 {
+  font-size: 42px;
+  line-height: 1.04;
+  letter-spacing: -.015em;
+  text-align: center;
+}
+img {
+  margin: 0 auto;
+  width: 80%!important;
+  height: auto!important;
+}
+@media screen and (max-width: 650px) {
+  #feedit-con {
+    width: 100%!important;
+  }
+}
+    </style>
+    <title><#= title #></title>
+  </head>
+  <body>
+    <div id="feedit-con">
+      <div id="feedit-header">
+        <span id="feedit-date"><#= pubDate #></span>
+        <span id="feedit-link"><#= link #></span>
+      </div>
+      <div id="feedit-content">
+        <#= content #>
+      </div>
+    </div>
+  </body>
+</html>
