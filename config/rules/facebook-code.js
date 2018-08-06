@@ -6,9 +6,9 @@ const cheerio = require('cheerio');
 const _ = require('../../app/helper');
 
 module.exports = {
-  enable: false,
+  enable: true,
   run: async () => {
-    const url = 'https://www.smashingmagazine.com/feed';
+    const url = 'https://code.fb.com/feed/';
 
     const res = await _.requestXML(url);
     const first = res.rss.channel.item[0];

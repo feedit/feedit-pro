@@ -6,13 +6,13 @@ const cheerio = require('cheerio');
 const _ = require('../../app/helper');
 
 module.exports = {
-  enable: false,
+  enable: true,
   run: async () => {
-    const url = 'https://www.smashingmagazine.com/feed';
+    const url = 'https://engineering.grab.com/feed.xml';
 
     const res = await _.requestXML(url);
     const first = res.rss.channel.item[0];
-    const content = first.content$encoded.$cd;
+    const content = first.description;
 
     let $ = cheerio.load(content);
 

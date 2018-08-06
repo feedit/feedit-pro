@@ -6,9 +6,9 @@ const cheerio = require('cheerio');
 const _ = require('../../app/helper');
 
 module.exports = {
-  enable: false,
+  enable: true,
   run: async () => {
-    const url = 'https://www.smashingmagazine.com/feed';
+    const url = 'https://medium.com/feed/airbnb-engineering';
 
     const res = await _.requestXML(url);
     const first = res.rss.channel.item[0];
@@ -21,6 +21,8 @@ module.exports = {
     } catch (e) {
       console.log(e.stack);
     }
+
+    first.title = first.title.$cd;
 
     const html = _.beautify($, first);
 

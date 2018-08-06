@@ -3,7 +3,6 @@
 const fs = require('fs');
 const path = require('path');
 const xutil = require('xutil');
-const cheerio = require('cheerio');
 const request = require('request');
 const xml2map = require('xml2map');
 const Render = require('microtemplate').render;
@@ -46,21 +45,20 @@ _.translateNode = async $ => {
     const tags = $(list[i]);
     for (let j = 0; j < tags.length; j++) {
       const node = $(tags[j]);
-      let content = node.text().trim();
-      if (content && content.length > 50) {
+      const content = node.text().trim();
+      let text = '';
+      if (content && content.length > 100) {
         try {
-          _.sleep(1000);
-          const {
-            text,
-          } = await translate(content, {
+          await _.sleep(5000);
+          text = (await translate(content, {
             from: 'en',
             to: 'zh-CN',
-          });
-          content = text + content;
+          })).text;
+          console.log(text);
         } catch (e) {
           console.log(e.stack);
         }
-        node.text(content);
+        node.html(`<div><span>${text}<span><span class="feedit-en">${content}</span></div>`);
       }
     }
   }
@@ -81,11 +79,13 @@ _.beautify = ($, options) => {
 _.archiveToDir = options => {
   const {
     HOME,
+    FEEDIT_ROOT,
   } = process.env;
-  const distPath = path.join(HOME, pkg.name, options.siteId, options.title);
+  const distPath = path.join(FEEDIT_ROOT || HOME, pkg.name, options.siteId, options.title);
   _.mkdir(distPath);
-
-  fs.writeFileSync(path.join(distPath, 'index.html'), options.html);
+  const file = path.join(distPath, 'index.html');
+  fs.writeFileSync(file, options.html);
+  console.log(file);
 };
 
 module.exports = _;
