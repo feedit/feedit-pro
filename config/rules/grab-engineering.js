@@ -9,11 +9,17 @@ module.exports = {
   enable: true,
   run: async () => {
     const url = 'https://engineering.grab.com/feed.xml';
+    const siteId = path.basename(__filename).replace('.js', '');
 
     const res = await _.requestXML(url);
     const first = res.rss.channel.item[0];
-    const content = first.description;
+    first.siteId = siteId;
 
+    if (_.isExisted(first)) {
+      return;
+    }
+
+    const content = first.description;
     let $ = cheerio.load(content);
 
     try {
@@ -22,14 +28,6 @@ module.exports = {
       console.log(e.stack);
     }
 
-    const html = _.beautify($, first);
-
-    const siteId = path.basename(__filename).replace('.js', '');
-
-    _.archiveToDir({
-      ...first,
-      siteId,
-      html,
-    });
+    await _.archiveToDir($, first);
   },
 };
