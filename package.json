@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "dingtalk-robot-sender": "^1.1.1",
     "egg": "^2.9.1",
     "egg-scripts": "^2.5.0",
     "google-translate-api": "^2.3.0",

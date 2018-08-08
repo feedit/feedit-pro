@@ -9,11 +9,17 @@ module.exports = {
   enable: true,
   run: async () => {
     const url = 'https://medium.com/feed/airbnb-engineering';
+    const siteId = path.basename(__filename).replace('.js', '');
 
     const res = await _.requestXML(url);
     const first = res.rss.channel.item[0];
-    const content = first.content$encoded.$cd;
+    first.siteId = siteId;
 
+    if (_.isExisted(first)) {
+      return;
+    }
+
+    const content = first.content$encoded.$cd;
     let $ = cheerio.load(content);
 
     try {
@@ -24,14 +30,7 @@ module.exports = {
 
     first.title = first.title.$cd;
 
-    const html = _.beautify($, first);
-
-    const siteId = path.basename(__filename).replace('.js', '');
-
-    _.archiveToDir({
-      ...first,
-      siteId,
-      html,
-    });
+    await _.archiveToDir($, first);
   },
 };
+
