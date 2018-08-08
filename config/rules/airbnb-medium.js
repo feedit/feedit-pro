@@ -14,6 +14,7 @@ module.exports = {
     const res = await _.requestXML(url);
     const first = res.rss.channel.item[0];
     first.siteId = siteId;
+    first.title = first.title.$cd;
 
     if (_.isExisted(first)) {
       return;
@@ -27,8 +28,6 @@ module.exports = {
     } catch (e) {
       console.log(e.stack);
     }
-
-    first.title = first.title.$cd;
 
     await _.archiveToDir($, first);
   },
