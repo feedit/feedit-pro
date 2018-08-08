@@ -93,6 +93,7 @@ _.genFileDir = options => {
 };
 
 _.archiveToDir = async ($, options) => {
+  options.title = options.title.replace(/\s+/g, '-');
   const file = _.genFileDir(options);
   const html = _.beautify($, options);
   fs.writeFileSync(file, html);
@@ -115,16 +116,18 @@ _.archiveToDir = async ($, options) => {
       webhook: WEBHOOK_URL,
     });
     const text = [
-      `## ${title}`,
-      `[${options.siteId}](http://xdf.me/feedit-pro/${options.siteId}/${options.title})`,
+      `### ${title}`,
+      '---',
+      `[> ${options.siteId}](http://xdf.me/feedit-pro/${options.siteId}/${options.title})`,
     ];
-    await robot.markdown(title, text.join('\n'));
+    await robot.markdown(title, text.join('\n\n'));
   } catch (e) {
     console.log(e.stack);
   }
 };
 
 _.isExisted = options => {
+  options.title = options.title.replace(/\s+/g, '-');
   const file = _.genFileDir(options);
   return _.isExistedFile(file);
 };
