@@ -58,7 +58,12 @@ _.translateNode = async $ => {
         } catch (e) {
           console.log(e.stack);
         }
-        node.html(`<div><span>${text}<span><span class="feedit-en">${content}</span></div>`);
+        node.html(`
+          <div>
+            <span>${text}</span>
+            <span class="feedit-en">${content}</span>
+          </div>
+        `);
       }
     }
   }
