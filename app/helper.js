@@ -40,7 +40,7 @@ _.requestXML = async url => {
 };
 
 _.translateNode = async $ => {
-  const list = [ 'p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ];
+  const list = [ 'div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ];
   for (let i = 0; i < list.length; i++) {
     const tags = $(list[i]);
     for (let j = 0; j < tags.length; j++) {
@@ -59,7 +59,7 @@ _.translateNode = async $ => {
           console.log(e.stack);
         }
         node.html(`
-          <div>
+          <div class="feedit-item">
             <span>${text}</span>
             <span class="feedit-en">${content}</span>
           </div>
