@@ -20,12 +20,11 @@ body {
   margin: 0 auto;
   line-height: 1.6;
 }
+#feedit-header {
+  font-size: 14px;
+}
 #feedit-content {
   text-align: justify;
-}
-#feedit-date {
-}
-#feedit-link {
 }
 .feedit-en {
   font-size: 14px;
@@ -54,7 +53,9 @@ img {
     <div id="feedit-con">
       <div id="feedit-header">
         <span id="feedit-date"><#= pubDate #></span>
-        <span id="feedit-link"><#= link #></span>
+        <span id="feedit-link">
+          <a href="<#= link #>" target="_blank"><#= link #></a>
+        </span>
       </div>
       <div id="feedit-content">
         <#= content #>

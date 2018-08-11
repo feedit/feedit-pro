@@ -40,7 +40,7 @@ _.requestXML = async url => {
   return xml2map.tojson(xml);
 };
 
-_.translateNode = async $ => {
+_.translateNode = async (context, $) => {
   const list = [ 'div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ];
   for (let i = 0; i < list.length; i++) {
     const tags = $(list[i]);
@@ -55,9 +55,9 @@ _.translateNode = async $ => {
             from: 'en',
             to: 'zh-CN',
           })).text;
-          console.log(text);
+          context.logger.info(text);
         } catch (e) {
-          console.log(e.stack);
+          context.logger.warn(e.stack);
         }
         node.html(`
           <div class="feedit-item">
@@ -92,12 +92,13 @@ _.genFileDir = options => {
   return path.join(distPath, 'index.html');
 };
 
-_.archiveToDir = async ($, options) => {
+_.archiveToDir = async (context, $, options) => {
   options.title = options.title.replace(/\s+/g, '-');
+  options.pubDate = _.moment(options.pubDate).format('YY-MM-DD HH:mm:ss');
   const file = _.genFileDir(options);
   const html = _.beautify($, options);
   fs.writeFileSync(file, html);
-  console.log(file);
+  context.logger.info(`file: ${file}`);
 
   const {
     WEBHOOK_URL,
@@ -118,11 +119,12 @@ _.archiveToDir = async ($, options) => {
     const text = [
       `### ${title}`,
       '---',
+      `pub date: ${options.pubDate}`,
       `[> ${options.siteId}](http://xdf.me/feedit-pro/${options.siteId}/${options.title})`,
     ];
     await robot.markdown(title, text.join('\n\n'));
   } catch (e) {
-    console.log(e.stack);
+    context.logger.warn(e.stack);
   }
 };
 

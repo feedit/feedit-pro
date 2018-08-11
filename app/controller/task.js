@@ -7,7 +7,7 @@ const _ = require('../helper');
 
 const ruleDir = path.join(__dirname, '..', '..', 'config', 'rules');
 
-module.exports = async () => {
+module.exports = async context => {
   const list = fs
     .readdirSync(ruleDir)
     .filter(i => path.extname(i) === '.js');
@@ -19,12 +19,12 @@ module.exports = async () => {
     if (!config.enable) {
       continue;
     }
-    console.log(_.chalk.green(`task [${siteId}] start at: ${_.moment().format('YY-MM-DD HH:mm:ss')}`));
+    context.logger.info(`task [${siteId}] start at: ${_.moment().format('YY-MM-DD HH:mm:ss')}`);
     try {
-      await config.run();
+      await config.run(context);
     } catch (e) {
-      console.log(e.stack);
+      context.logger.warn(e.stack);
     }
-    console.log(_.chalk.red(`task [${siteId}]   end at: ${_.moment().format('YY-MM-DD HH:mm:ss')}`));
+    context.logger.info(`task [${siteId}]   end at: ${_.moment().format('YY-MM-DD HH:mm:ss')}`);
   }
 };
