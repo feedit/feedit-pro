@@ -7,7 +7,7 @@ const _ = require('../../app/helper');
 
 module.exports = {
   enable: true,
-  run: async () => {
+  run: async context => {
     const url = 'https://code.fb.com/feed/';
     const siteId = path.basename(__filename).replace('.js', '');
 
@@ -21,13 +21,8 @@ module.exports = {
 
     const content = first.content$encoded.$cd;
     let $ = cheerio.load(content);
+    $ = await _.translateNode(context, $);
 
-    try {
-      $ = await _.translateNode($);
-    } catch (e) {
-      console.log(e.stack);
-    }
-
-    await _.archiveToDir($, first);
+    await _.archiveToDir(context, $, first);
   },
 };

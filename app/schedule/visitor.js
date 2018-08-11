@@ -18,7 +18,7 @@ class Visitor extends Subscription {
   }
 
   async subscribe() {
-    await task();
+    await task(this);
   }
 
 }
