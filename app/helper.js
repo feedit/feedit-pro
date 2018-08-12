@@ -82,7 +82,7 @@ _.beautify = ($, options) => {
   });
 };
 
-_.genFileDir = options => {
+_.genHtmlFileDir = options => {
   const {
     HOME,
     FEEDIT_ROOT,
@@ -92,13 +92,33 @@ _.genFileDir = options => {
   return path.join(distPath, 'index.html');
 };
 
+_.genJsonFileDir = options => {
+  const {
+    HOME,
+    FEEDIT_ROOT,
+  } = process.env;
+  const distPath = path.join(FEEDIT_ROOT || HOME, pkg.name, options.siteId, options.title);
+  _.mkdir(distPath);
+  return path.join(distPath, 'archive.json');
+};
+
 _.archiveToDir = async (context, $, options) => {
   options.title = options.title.replace(/\s+/g, '-');
   options.pubDate = _.moment(options.pubDate).format('YY-MM-DD HH:mm:ss');
-  const file = _.genFileDir(options);
+  const htmlFile = _.genHtmlFileDir(options);
   const html = _.beautify($, options);
-  fs.writeFileSync(file, html);
-  context.logger.info(`file: ${file}`);
+  fs.writeFileSync(htmlFile, html);
+  context.logger.info(`file: ${htmlFile}`);
+
+  const jsonFile = _.genJsonFileDir(options);
+  fs.writeFileSync(jsonFile, JSON.stringify({
+    title: options.title,
+    link: options.link,
+    pubDate: options.pubDate,
+    description: options.description,
+    siteId: options.siteId,
+  }, 2, null));
+  context.logger.info(`file: ${jsonFile}`);
 
   const {
     WEBHOOK_URL,
@@ -130,8 +150,8 @@ _.archiveToDir = async (context, $, options) => {
 
 _.isExisted = options => {
   options.title = options.title.replace(/\s+/g, '-');
-  const file = _.genFileDir(options);
-  return _.isExistedFile(file);
+  const htmlFile = _.genHtmlFileDir(options);
+  return _.isExistedFile(htmlFile);
 };
 
 module.exports = _;
