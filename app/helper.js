@@ -61,8 +61,8 @@ _.translateNode = async (context, $) => {
         }
         node.html(`
           <div class="feedit-item">
-            <span>${text}</span>
-            <span class="feedit-en">${content}</span>
+            <span>${content}</span>
+            <span class="feedit-en">${text}</span>
           </div>
         `);
       }
@@ -103,6 +103,7 @@ _.genJsonFileDir = options => {
 };
 
 _.archiveToDir = async (context, $, options) => {
+  options.originTitle = options.title;
   options.title = options.title.replace(/\s+/g, '-');
   options.pubDate = _.moment(options.pubDate).format('YY-MM-DD HH:mm:ss');
   const htmlFile = _.genHtmlFileDir(options);
@@ -127,22 +128,18 @@ _.archiveToDir = async (context, $, options) => {
   if (!WEBHOOK_URL) {
     return;
   }
-  await _.sleep(1000);
-  const title = (await translate(options.title, {
-    from: 'en',
-    to: 'zh-CN',
-  })).text;
+
   try {
     const robot = new ChatBot({
       webhook: WEBHOOK_URL,
     });
     const text = [
-      `### ${title}`,
+      `### ${options.originTitle}`,
       '---',
       `pub date: ${options.pubDate}`,
       `[> ${options.siteId}](http://xdf.me/feedit-pro/${options.siteId}/${options.title})`,
     ];
-    await robot.markdown(title, text.join('\n\n'));
+    await robot.markdown(options.originTitle, text.join('\n\n'));
   } catch (e) {
     context.logger.warn(e.stack);
   }
