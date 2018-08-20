@@ -87,7 +87,7 @@ _.genHtmlFileDir = options => {
     HOME,
     FEEDIT_ROOT,
   } = process.env;
-  const distPath = path.join(FEEDIT_ROOT || HOME, pkg.name, options.siteId, options.title);
+  const distPath = path.join(FEEDIT_ROOT || HOME, pkg.name, options.siteId, options._title);
   _.mkdir(distPath);
   return path.join(distPath, 'index.html');
 };
@@ -97,14 +97,13 @@ _.genJsonFileDir = options => {
     HOME,
     FEEDIT_ROOT,
   } = process.env;
-  const distPath = path.join(FEEDIT_ROOT || HOME, pkg.name, options.siteId, options.title);
+  const distPath = path.join(FEEDIT_ROOT || HOME, pkg.name, options.siteId, options._title);
   _.mkdir(distPath);
   return path.join(distPath, 'archive.json');
 };
 
 _.archiveToDir = async (context, $, options) => {
-  options.originTitle = options.title;
-  options.title = options.title.replace(/\s+/g, '-');
+  options._title = options.title.replace(/\s+/g, '-');
   options.pubDate = _.moment(options.pubDate).format('YY-MM-DD HH:mm:ss');
   const htmlFile = _.genHtmlFileDir(options);
   const html = _.beautify($, options);
@@ -113,7 +112,7 @@ _.archiveToDir = async (context, $, options) => {
 
   const jsonFile = _.genJsonFileDir(options);
   fs.writeFileSync(jsonFile, JSON.stringify({
-    title: options.title,
+    title: options._title,
     link: options.link,
     pubDate: options.pubDate,
     description: options.description,
@@ -137,7 +136,7 @@ _.archiveToDir = async (context, $, options) => {
       `### ${options.originTitle}`,
       '---',
       `pub date: ${options.pubDate}`,
-      `[> ${options.siteId}](http://xdf.me/feedit-pro/${options.siteId}/${options.title})`,
+      `[> ${options.siteId}](http://xdf.me/feedit-pro/${options.siteId}/${options._title})`,
     ];
     await robot.markdown(options.originTitle, text.join('\n\n'));
   } catch (e) {
@@ -146,7 +145,7 @@ _.archiveToDir = async (context, $, options) => {
 };
 
 _.isExisted = options => {
-  options.title = options.title.replace(/\s+/g, '-');
+  options._title = options.title.replace(/\s+/g, '-');
   const htmlFile = _.genHtmlFileDir(options);
   return _.isExistedFile(htmlFile);
 };
