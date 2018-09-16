@@ -7,7 +7,6 @@ const _ = require('../../app/helper');
 
 module.exports = {
   enable: true,
-  logoUrl: 'https://feedit.github.io/feedit-pro/app/public/images/facebook.jpg',
   run: async context => {
     const url = 'https://code.fb.com/feed/';
     const siteId = path.basename(__filename).replace('.js', '');
@@ -15,6 +14,7 @@ module.exports = {
     const res = await _.requestXML(url);
     const first = res.rss.channel.item[0];
     first.siteId = siteId;
+    first.logoUrl = 'https://feedit.github.io/feedit-pro/app/public/images/facebook.jpg';
 
     if (_.isExisted(first)) {
       return;
