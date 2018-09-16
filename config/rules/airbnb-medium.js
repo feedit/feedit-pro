@@ -7,6 +7,7 @@ const _ = require('../../app/helper');
 
 module.exports = {
   enable: true,
+  logoUrl: 'https://wx4.sinaimg.cn/large/6d308bd9gy1fvbr0potq4j2028028dg2.jpg',
   run: async context => {
     const url = 'https://medium.com/feed/airbnb-engineering';
     const siteId = path.basename(__filename).replace('.js', '');
@@ -26,4 +27,3 @@ module.exports = {
     await _.archiveToDir(context, $, first);
   },
 };
-

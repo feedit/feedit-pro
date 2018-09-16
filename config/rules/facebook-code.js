@@ -7,6 +7,7 @@ const _ = require('../../app/helper');
 
 module.exports = {
   enable: true,
+  logoUrl: 'https://wx1.sinaimg.cn/large/6d308bd9gy1fvbrjq1txcj2028028jrk.jpg',
   run: async context => {
     const url = 'https://code.fb.com/feed/';
     const siteId = path.basename(__filename).replace('.js', '');
