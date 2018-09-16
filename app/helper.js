@@ -137,7 +137,7 @@ _.archiveToDir = async (context, $, options) => {
       title: options._title.replace(/-/g, ' '),
       text: `${options.siteId.replace(/-/g, ' ')}\n${options.pubDate}`,
       picUrl: options.logoUrl,
-      messageUrl: `http://xdf.me/feedit-pro/${options.siteId}/${options._title}`
+      messageUrl: `http://xdf.me/feedit-pro/${options.siteId}/${options._title}`,
     };
     await robot.link(link)
   } catch (e) {
