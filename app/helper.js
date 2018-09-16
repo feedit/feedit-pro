@@ -133,7 +133,7 @@ _.archiveToDir = async (context, $, options) => {
       webhook: WEBHOOK_URL,
     });
 
-    let link = {
+    const link = {
       title: options._title.replace(/-/g, ' '),
       text: `${options.siteId.replace(/-/g, ' ')}\n${options.pubDate}`,
       picUrl: options.logoUrl,
