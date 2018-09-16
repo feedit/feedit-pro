@@ -7,6 +7,7 @@ const _ = require('../../app/helper');
 
 module.exports = {
   enable: true,
+  logoUrl: 'https://wx3.sinaimg.cn/large/6d308bd9gy1fvbrmjl94jj2028028aab.jpg',
   run: async context => {
     const url = 'https://www.smashingmagazine.com/feed';
     const siteId = path.basename(__filename).replace('.js', '');

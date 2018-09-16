@@ -132,13 +132,14 @@ _.archiveToDir = async (context, $, options) => {
     const robot = new ChatBot({
       webhook: WEBHOOK_URL,
     });
-    const text = [
-      `### ${options.originTitle}`,
-      '---',
-      `pub date: ${options.pubDate}`,
-      `[> ${options.siteId}](http://xdf.me/feedit-pro/${options.siteId}/${options._title})`,
-    ];
-    await robot.markdown(options.originTitle, text.join('\n\n'));
+
+    let link = {
+      title: options._title.replace(/-/g, ' '),
+      text: `${options.siteId.replace(/-/g, ' ')}\n${options.pubDate}`,
+      picUrl: options.logoUrl,
+      messageUrl: `http://xdf.me/feedit-pro/${options.siteId}/${options._title}`
+    };
+    await robot.link(link)
   } catch (e) {
     context.logger.warn(e.stack);
   }

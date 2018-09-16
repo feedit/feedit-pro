@@ -7,6 +7,7 @@ const _ = require('../../app/helper');
 
 module.exports = {
   enable: true,
+  logoUrl: 'https://wx1.sinaimg.cn/large/6d308bd9gy1fvbrl59vm8j2028028dg1.jpg',
   run: async context => {
     const url = 'https://engineering.grab.com/feed.xml';
     const siteId = path.basename(__filename).replace('.js', '');
