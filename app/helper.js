@@ -148,7 +148,7 @@ _.archiveToDir = async (context, $, options) => {
 _.isExisted = options => {
   options._title = options.title.replace(/\s+/g, '-');
   const htmlFile = _.genHtmlFileDir(options);
-  return _.isExistedFile(htmlFile);
+  return fs.existsSync(htmlFile) && fs.statSync(htmlFile).isFile();
 };
 
 module.exports = _;
