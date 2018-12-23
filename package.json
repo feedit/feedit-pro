@@ -1,7 +1,7 @@
 {
   "name": "feedit-pro",
   "version": "1.0.0",
-  "description": "feedit pro",
+  "description": "help you subscribe to the tech blog you want",
   "private": true,
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
