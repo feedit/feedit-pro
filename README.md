@@ -13,19 +13,11 @@
 [node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 
-> help you subscribe to the tech blog you want
+> help to subscribe the tech blog you want
 
 ## Dingtalk Bot
 
-<p align="center">
-  <a href="//macacajs.github.io">
-    <img
-      alt="Macaca"
-      src="https://wx2.sinaimg.cn/large/6d308bd9ly1fyh4l6jijbj20u00y3djp.jpg"
-      width="400"
-    />
-  </a>
-</p>
+<img src="https://wx2.sinaimg.cn/large/6d308bd9ly1fyh4l6jijbj20u00y3djp.jpg" width="400" />
 
 ## Setup
 
