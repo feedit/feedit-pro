@@ -22,7 +22,7 @@
     "egg-mock": "^3.14.0",
     "eslint": "^4.11.0",
     "eslint-config-egg": "^6.0.0",
-    "webstorm-disable-index": "^1.2.0"
+    "git-contributor": "^1.0.8"
   },
   "engines": {
     "node": ">=8.9.0"
@@ -37,7 +37,8 @@
     "cov": "egg-bin cov",
     "lint": "eslint . --fix",
     "ci": "npm run lint && npm run cov",
-    "autod": "autod"
+    "autod": "autod",
+    "contributor": "git-contributor"
   },
   "ci": {
     "version": "8"
