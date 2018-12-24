@@ -1,5 +1,7 @@
 'use strict';
 
+const { DEBUG_MODE } = process.env;
+
 module.exports = appInfo => {
   const config = exports = {};
 
@@ -16,7 +18,7 @@ module.exports = appInfo => {
     site: {
       baseUrl: process.env.BASE_URL || 'http://xdf.me/feedit-pro',
     },
-    autoTranslation: false,
+    autoTranslation: !DEBUG_MODE,
     rootDir: process.env.FEEDIT_ROOT_DIR || process.env.HOME,
   };
 

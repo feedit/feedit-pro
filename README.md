@@ -41,13 +41,13 @@ server {
 | ---- | ---- | ----------- |
 | WEBHOOK_URL | string | robot url of the dingtalk group |
 | BASE_URL | string | base url of your website |
-| FEEDIT_ROOT | string | root directory of archive posts, default: $HOME |
+| FEEDIT_ROOT_DIR | string | root directory of archive posts, default: $HOME |
 
 ```bash
 $ git clone https://github.com/feedit/feedit-pro.git
 $ npm i
 # start feedit service
-$ WEBHOOK_URL=xxx BASE_URL=https://your.site FEEDIT_ROOT=/usr/share/nginx/html npm run start
+$ WEBHOOK_URL=xxx BASE_URL=https://your.site FEEDIT_ROOT_DIR=/usr/share/nginx/html npm run start
 ```
 
 ### Add rules
