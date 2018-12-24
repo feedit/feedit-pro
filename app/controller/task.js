@@ -1,20 +1,22 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
+const glob = require('glob');
 
 const _ = require('../helper');
 
 const ruleDir = path.join(__dirname, '..', '..', 'config', 'rules');
 
 module.exports = async context => {
-  const list = fs
-    .readdirSync(ruleDir)
-    .filter(i => path.extname(i) === '.js');
+
+  const list = glob.sync('**/**.js', {
+    cwd: ruleDir,
+    realpath: true,
+  });
 
   for (let i = 0; i < list.length; i++) {
-    const siteId = list[i];
-    const configFile = path.join(ruleDir, siteId);
+    const configFile = list[i];
+    const siteId = path.basename(configFile).replace('.js', '');
     const config = require(configFile);
     if (!config.enable) {
       continue;

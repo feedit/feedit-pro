@@ -18,13 +18,15 @@ module.exports = {
     first.siteId = siteId;
     first.logoUrl = 'https://feedit.github.io/feedit-pro/app/public/images/google.jpg';
 
-    if (_.isExisted(first)) {
+    if (_.isExisted(context, first)) {
       return;
     }
 
     const content = first.content;
     let $ = cheerio.load(content);
+
     $ = await _.translateNode(context, $);
+
     await _.archiveToDir(context, $, first);
   },
 };
