@@ -79,9 +79,6 @@ _.translateNode = async (context, $) => {
     autoTranslation,
   } = context.app.config.feedit;
 
-  if (!autoTranslation) {
-    return $;
-  }
   const list = [ 'div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ];
   for (let i = 0; i < list.length; i++) {
     const tags = $(list[i]);
@@ -90,22 +87,30 @@ _.translateNode = async (context, $) => {
       const content = node.text().trim();
       let text = '';
       if (content && content.length > 100) {
-        try {
-          await _.sleep(5000);
-          text = (await translate(content, {
-            from: 'en',
-            to: 'zh-CN',
-          })).text;
-          context.logger.info(text);
-        } catch (e) {
-          context.logger.warn(e.stack);
+        if (autoTranslation) {
+          try {
+            await _.sleep(5000);
+            text = (await translate(content, {
+              from: 'en',
+              to: 'zh-CN',
+            })).text;
+            context.logger.info(text);
+          } catch (e) {
+            context.logger.warn(e.stack);
+          }
+          node.html(`
+            <div class="feedit-item">
+              <span>${content}</span>
+              <span class="feedit-en">${text}</span>
+            </div>
+          `);
+        } else {
+          node.html(`
+            <div class="feedit-item">
+              <span>${content}</span>
+            </div>
+          `);
         }
-        node.html(`
-          <div class="feedit-item">
-            <span>${content}</span>
-            <span class="feedit-en">${text}</span>
-          </div>
-        `);
       }
     }
   }
