@@ -3,7 +3,7 @@
 const path = require('path');
 const cheerio = require('cheerio');
 
-const _ = require('../../app/helper');
+const _ = require('../../../app/helper');
 
 module.exports = {
   enable: true,
@@ -17,7 +17,7 @@ module.exports = {
     first.title = first.title.$cd;
     first.logoUrl = 'https://feedit.github.io/feedit-pro/app/public/images/airbnb.jpg';
 
-    if (_.isExisted(first)) {
+    if (_.isExisted(context, first)) {
       return;
     }
 

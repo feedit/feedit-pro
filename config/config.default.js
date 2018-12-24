@@ -9,5 +9,16 @@ module.exports = appInfo => {
   // add your config here
   config.middleware = [];
 
+  config.feedit = {
+    dingtalk: {
+      robotUrl: process.env.WEBHOOK_URL,
+    },
+    site: {
+      baseUrl: process.env.BASE_URL || 'http://xdf.me/feedit-pro',
+    },
+    autoTranslation: false,
+    rootDir: process.env.FEEDIT_ROOT_DIR || process.env.HOME,
+  };
+
   return config;
 };

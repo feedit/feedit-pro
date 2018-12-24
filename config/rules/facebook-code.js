@@ -16,7 +16,7 @@ module.exports = {
     first.siteId = siteId;
     first.logoUrl = 'https://feedit.github.io/feedit-pro/app/public/images/facebook.jpg';
 
-    if (_.isExisted(first)) {
+    if (_.isExisted(context, first)) {
       return;
     }
 

@@ -80,6 +80,12 @@ module.exports = {
 };
 ```
 
+## Development
+
+```bash
+$ DEBUG_MODE=true node ./app/schedule/visitor.js
+```
+
 <!-- GITCONTRIBUTOR_START -->
 
 ## Contributors

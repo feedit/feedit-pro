@@ -16,6 +16,8 @@ const pkg = require('../package');
 
 const _ = xutil.merge({}, xutil);
 
+const { DEBUG_MODE } = process.env;
+
 _.sleep = second => {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -25,6 +27,38 @@ _.sleep = second => {
 };
 
 _.requestXML = async url => {
+  if (DEBUG_MODE) {
+    return {
+      feed: {
+        entry: [
+          {
+            published: 'published',
+            author: {
+              uri: 'uri',
+            },
+            title: 'title',
+            content: 'content',
+          },
+        ],
+      },
+      rss: {
+        channel: {
+          item: [
+            {
+              title: {
+                $cd: '$cd',
+              },
+              content$encoded: {
+                $cd: '$cd',
+              },
+              link: 'link',
+              description: 'description',
+            },
+          ],
+        },
+      },
+    };
+  }
   const options = {
     url,
     headers: {
@@ -41,6 +75,13 @@ _.requestXML = async url => {
 };
 
 _.translateNode = async (context, $) => {
+  const {
+    autoTranslation,
+  } = context.app.config.feedit;
+
+  if (!autoTranslation) {
+    return $;
+  }
   const list = [ 'div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ];
   for (let i = 0; i < list.length; i++) {
     const tags = $(list[i]);
@@ -82,22 +123,14 @@ _.beautify = ($, options) => {
   });
 };
 
-_.genHtmlFileDir = options => {
-  const {
-    HOME,
-    FEEDIT_ROOT,
-  } = process.env;
-  const distPath = path.join(FEEDIT_ROOT || HOME, pkg.name, options.siteId, options._title);
+_.genHtmlFileDir = (rootDir, options) => {
+  const distPath = path.join(rootDir, pkg.name, options.siteId, options._title);
   _.mkdir(distPath);
   return path.join(distPath, 'index.html');
 };
 
-_.genJsonFileDir = options => {
-  const {
-    HOME,
-    FEEDIT_ROOT,
-  } = process.env;
-  const distPath = path.join(FEEDIT_ROOT || HOME, pkg.name, options.siteId, options._title);
+_.genJsonFileDir = (rootDir, options) => {
+  const distPath = path.join(rootDir, pkg.name, options.siteId, options._title);
   _.mkdir(distPath);
   return path.join(distPath, 'archive.json');
 };
@@ -105,12 +138,15 @@ _.genJsonFileDir = options => {
 _.archiveToDir = async (context, $, options) => {
   options._title = options.title.replace(/\s+/g, '-');
   options.pubDate = _.moment(options.pubDate).format('YY-MM-DD HH:mm:ss');
-  const htmlFile = _.genHtmlFileDir(options);
+  const {
+    rootDir,
+  } = context.app.config.feedit;
+  const htmlFile = _.genHtmlFileDir(rootDir, options);
   const html = _.beautify($, options);
   fs.writeFileSync(htmlFile, html);
   context.logger.info(`file: ${htmlFile}`);
 
-  const jsonFile = _.genJsonFileDir(options);
+  const jsonFile = _.genJsonFileDir(rootDir, options);
   fs.writeFileSync(jsonFile, JSON.stringify({
     title: options._title,
     link: options.link,
@@ -121,20 +157,20 @@ _.archiveToDir = async (context, $, options) => {
   context.logger.info(`file: ${jsonFile}`);
 
   const {
-    WEBHOOK_URL,
-  } = process.env;
+    dingtalk,
+    site,
+  } = context.app.config.feedit;
 
-  if (!WEBHOOK_URL) {
+  if (!dingtalk.robotUrl) {
     return;
   }
 
   try {
     const robot = new ChatBot({
-      webhook: WEBHOOK_URL,
+      webhook: dingtalk.robotUrl,
     });
-    const baseUrl = process.env.BASE_URL || 'http://xdf.me/feedit-pro';
 
-    const messageUrl = `${baseUrl}/${options.siteId}/${encodeURIComponent(options._title)}/`;
+    const messageUrl = `${site.baseUrl}/${options.siteId}/${encodeURIComponent(options._title)}/`;
 
     const link = {
       title: options._title.replace(/-/g, ' '),
@@ -142,16 +178,23 @@ _.archiveToDir = async (context, $, options) => {
       picUrl: options.logoUrl,
       messageUrl,
     };
-    await robot.link(link)
+    await robot.link(link);
   } catch (e) {
     context.logger.warn(e.stack);
   }
 };
 
-_.isExisted = options => {
-  options._title = options.title.replace(/\s+/g, '-');
-  const htmlFile = _.genHtmlFileDir(options);
-  return fs.existsSync(htmlFile) && fs.statSync(htmlFile).isFile();
+_.isExisted = (context, options) => {
+  const {
+    rootDir,
+  } = context.app.config.feedit;
+  if (typeof options.title === 'string') {
+    options._title = options.title.replace(/\s+/g, '-');
+    const htmlFile = _.genHtmlFileDir(rootDir, options);
+    return fs.existsSync(htmlFile) && fs.statSync(htmlFile).isFile();
+  }
+  return true;
+
 };
 
 module.exports = _;
