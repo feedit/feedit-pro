@@ -8,7 +8,7 @@ const _ = require('../../../app/helper');
 module.exports = {
   enable: true,
   run: async context => {
-    const url = 'https://medium.com/feed/netfix-techblog';
+    const url = 'https://medium.com/feed/netflix-techblog';
     const siteId = path.basename(__filename).replace('.js', '');
 
     const res = await _.requestXML(url);
