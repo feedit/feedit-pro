@@ -58,24 +58,24 @@ rules is located in [config/rules](./config/rules)
 // for example
 module.exports = {
   enable: true,
-  run: async context => {
-    const url = 'https://medium.com/feed/netfix-techblog';
+  run: async function() {
+    const url = 'https://medium.com/feed/netflix-techblog';
     const siteId = path.basename(__filename).replace('.js', '');
 
-    const res = await _.requestXML(url);
+    const res = await this.ctx.requestXML(url);
     const first = res.rss.channel.item[0];
     first.siteId = siteId;
     first.title = first.title.$cd;
     first.logoUrl = 'https://feedit.github.io/feedit-pro/app/public/images/netflix.jpg';
 
-    if (_.isExisted(first)) {
+    if (this.ctx.isExisted(first)) {
       return;
     }
 
     const content = first.content$encoded.$cd;
     let $ = cheerio.load(content);
-    $ = await _.translateNode(context, $);
-    await _.archiveToDir(context, $, first);
+    $ = await this.ctx.translateNode($);
+    await this.ctx.archiveToDir($, first);
   },
 };
 ```
