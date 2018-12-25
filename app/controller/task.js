@@ -3,12 +3,11 @@
 const path = require('path');
 const glob = require('glob');
 
-const _ = require('../helper');
+const _ = require('xutil');
 
 const ruleDir = path.join(__dirname, '..', '..', 'config', 'rules');
 
 module.exports = async context => {
-
   const list = glob.sync('**/**.js', {
     cwd: ruleDir,
     realpath: true,
@@ -23,7 +22,7 @@ module.exports = async context => {
     }
     context.logger.info(`task [${siteId}] start at: ${_.moment().format('YY-MM-DD HH:mm:ss')}`);
     try {
-      await config.run(context);
+      await config.run.call(context);
     } catch (e) {
       context.logger.warn(e.stack);
     }
