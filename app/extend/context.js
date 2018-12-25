@@ -16,7 +16,7 @@ const pkg = require('../../package');
 
 const { DEBUG_MODE } = process.env;
 
-const core = {
+module.exports = {
   genHtmlFileDir(rootDir, options) {
     const distPath = path.join(rootDir, pkg.name, options.siteId, options._title);
     _.mkdir(distPath);
@@ -35,12 +35,12 @@ const core = {
     const {
       rootDir,
     } = this.app.config.feedit;
-    const htmlFile = core.genHtmlFileDir(rootDir, options);
-    const html = core.beautify($, options);
+    const htmlFile = this.genHtmlFileDir(rootDir, options);
+    const html = this.beautify($, options);
     fs.writeFileSync(htmlFile, html);
     this.logger.info(`file: ${htmlFile}`);
 
-    const jsonFile = core.genJsonFileDir(rootDir, options);
+    const jsonFile = this.genJsonFileDir(rootDir, options);
     fs.writeFileSync(jsonFile, JSON.stringify({
       title: options._title,
       link: options.link,
@@ -84,7 +84,7 @@ const core = {
     } = this.app.config.feedit;
     if (typeof options.title === 'string') {
       options._title = options.title.replace(/\s+/g, '-');
-      const htmlFile = core.genHtmlFileDir(rootDir, options);
+      const htmlFile = this.genHtmlFileDir(rootDir, options);
       return fs.existsSync(htmlFile) && fs.statSync(htmlFile).isFile();
     }
     return true;
@@ -161,7 +161,7 @@ const core = {
         if (content && content.length > 100) {
           if (autoTranslation) {
             try {
-              await core.sleep(5000);
+              await this.sleep(5000);
               text = (await translate(content, {
                 from: 'en',
                 to: 'zh-CN',
@@ -199,5 +199,3 @@ const core = {
     });
   },
 };
-
-module.exports = core;
