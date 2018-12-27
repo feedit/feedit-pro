@@ -15,6 +15,11 @@
 
 > help to subscribe the tech blog you want
 
+## Features
+
+- IM Robot push
+- Translate English to Chinese automatically
+
 ## Dingtalk Bot
 
 <img src="https://wx2.sinaimg.cn/large/6d308bd9ly1fyh4l6jijbj20u00y3djp.jpg" width="400" />
