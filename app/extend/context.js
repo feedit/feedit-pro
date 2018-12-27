@@ -90,14 +90,6 @@ module.exports = {
     return true;
   },
 
-  sleep(second) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve();
-      }, second || 1000);
-    });
-  },
-
   async requestXML(url) {
     if (DEBUG_MODE) {
       return {
@@ -161,7 +153,7 @@ module.exports = {
         if (content && content.length > 100) {
           if (autoTranslation) {
             try {
-              await this.sleep(5000);
+              await this.helper.sleep(5000);
               text = (await translate(content, {
                 from: 'en',
                 to: 'zh-CN',
