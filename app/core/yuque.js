@@ -21,7 +21,7 @@ module.exports = (options, app) => {
   };
 
   Client.prototype.publicDoc = async function(params) {
-    return await this.invoke('/repos/xudafeng/the-world-technology-frontier/docs', {
+    return await this.invoke('/repos/xudafeng/technology-frontier/docs', {
       public: 1,
       ...params,
     });
