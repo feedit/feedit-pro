@@ -10,7 +10,9 @@ const ChatBot = require('dingtalk-robot-sender');
 const translate = require('google-translate-api');
 
 const templateFile = path.join(__dirname, '..', 'template.html');
+const yuqueTemplateFile = path.join(__dirname, '..', 'yuque.html');
 const template = fs.readFileSync(templateFile, 'utf8');
+const yuqueTemplate = fs.readFileSync(yuqueTemplateFile, 'utf8');
 
 const pkg = require('../../package');
 
@@ -49,6 +51,17 @@ module.exports = {
       siteId: options.siteId,
     }, 2, null));
     this.logger.info(`file: ${jsonFile}`);
+
+    // archive to yuque
+    try {
+      const body = this.yuqueBeautify($, options);
+      await this.app.yuqueClient.publicDoc({
+        title: options.title,
+        slug: options._title,
+        body,
+      });
+    } catch (e) {
+    }
 
     const {
       dingtalk,
@@ -190,4 +203,14 @@ module.exports = {
       tagClose: '#>',
     });
   },
+  yuqueBeautify($, options) {
+    const body = $('body').html();
+    return Render(yuqueTemplate, {
+      ...options,
+      content: body,
+    }, {
+      tagOpen: '<#',
+      tagClose: '#>',
+    });
+  }
 };

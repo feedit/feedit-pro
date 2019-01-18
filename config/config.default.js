@@ -22,5 +22,10 @@ module.exports = appInfo => {
     rootDir: process.env.FEEDIT_ROOT_DIR || process.env.HOME,
   };
 
+  config.yuque = {
+    gateway: 'https://www.yuque.com/api/v2',
+    accessToken: process.env.YUQUE_PRIVATE_TOKEN,
+  };
+
   return config;
 };

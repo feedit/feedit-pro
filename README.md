@@ -47,6 +47,7 @@ server {
 | WEBHOOK_URL | string | robot url of the dingtalk group |
 | BASE_URL | string | base url of your website |
 | FEEDIT_ROOT_DIR | string | root directory of archive posts, default: $HOME |
+| YUQUE_PRIVATE_TOKEN | string | private token for Yuque |
 
 ```bash
 $ git clone https://github.com/feedit/feedit-pro.git
