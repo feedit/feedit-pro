@@ -61,6 +61,7 @@ module.exports = {
         body,
       });
     } catch (e) {
+      this.logger.warn(e);
     }
 
     const {
@@ -212,5 +213,5 @@ module.exports = {
       tagOpen: '<#',
       tagClose: '#>',
     });
-  }
+  },
 };

@@ -5,7 +5,7 @@ const cheerio = require('cheerio');
 
 module.exports = {
   enable: true,
-  run: async function() {
+  async run() {
     const url = 'https://www.smashingmagazine.com/feed';
     const siteId = path.basename(__filename).replace('.js', '');
 

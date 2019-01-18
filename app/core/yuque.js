@@ -2,7 +2,7 @@
 
 const urllib = require('urllib');
 
-module.exports = (options, app) => {
+module.exports = options => {
   function Client(options) {
     this.gateway = options.gateway;
     this.accessToken = options.accessToken;

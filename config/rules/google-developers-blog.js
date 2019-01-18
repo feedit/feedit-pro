@@ -5,7 +5,7 @@ const cheerio = require('cheerio');
 
 module.exports = {
   enable: true,
-  run: async function() {
+  async run() {
     const url = 'http://feeds.feedburner.com/GDBcode';
     const siteId = path.basename(__filename).replace('.js', '');
 
