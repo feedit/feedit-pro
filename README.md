@@ -17,7 +17,7 @@
 
 ## Watch Yuque
 
-Welcome watch my Yuque column and keep getting the latest knowledge: https://www.yuque.com/xudafeng/technology-frontier
+Welcome watch my [Yuque](https://www.yuque.com/xudafeng/technology-frontier) column and keep getting the latest knowledge.
 
 ## Features
 
