@@ -5,6 +5,7 @@ const _ = require('xutil');
 const path = require('path');
 const request = require('request');
 const xml2map = require('xml2map');
+const urlResolve = require('url').resolve;
 const Render = require('microtemplate').render;
 const ChatBot = require('dingtalk-robot-sender');
 const translate = require('google-translate-api');
@@ -38,6 +39,7 @@ module.exports = {
       rootDir,
     } = this.app.config.feedit;
     const htmlFile = this.genHtmlFileDir(rootDir, options);
+    $ = this.resolveImage($, options);
     const html = this.beautify($, options);
     fs.writeFileSync(htmlFile, html);
     this.logger.info(`file: ${htmlFile}`);
@@ -99,7 +101,7 @@ module.exports = {
     if (typeof options.title === 'string') {
       options._title = options.title.replace(/\s+/g, '-');
       const htmlFile = this.genHtmlFileDir(rootDir, options);
-      return fs.existsSync(htmlFile) && fs.statSync(htmlFile).isFile();
+      return _.isExistedFile(htmlFile);
     }
     return true;
   },
@@ -213,5 +215,12 @@ module.exports = {
       tagOpen: '<#',
       tagClose: '#>',
     });
+  },
+  resolveImage($, options) {
+    $('img').each(function() {
+      const src = $(this).attr('src');
+      $(this).attr('src', urlResolve(options.link, src));
+    });
+    return $;
   },
 };
