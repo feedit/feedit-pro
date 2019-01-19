@@ -1,6 +1,19 @@
 'use strict';
 
+const path = require('path');
+const dotenv = require('dotenv');
+
 const { DEBUG_MODE } = process.env;
+
+if (DEBUG_MODE) {
+  dotenv.config();
+} else {
+  dotenv.config({
+    path: path.resolve(__dirname, '..', '.env.prod'),
+  });
+}
+
+console.log(process.env);
 
 module.exports = appInfo => {
   const config = exports = {};

@@ -101,7 +101,13 @@ module.exports = {
     if (typeof options.title === 'string') {
       options._title = options.title.replace(/\s+/g, '-');
       const htmlFile = this.genHtmlFileDir(rootDir, options);
-      return _.isExistedFile(htmlFile);
+      const hasFile = _.isExistedFile(htmlFile);
+      if (hasFile) {
+        console.log(`file existed: ${htmlFile}`);
+      } else {
+        console.log(`file not existed: ${htmlFile}`);
+      }
+      return hasFile;
     }
     return true;
   },
