@@ -25,6 +25,8 @@ module.exports = appInfo => {
   config.yuque = {
     gateway: 'https://www.yuque.com/api/v2',
     accessToken: process.env.YUQUE_PRIVATE_TOKEN,
+    user: 'xudafeng',
+    repo: 'technology-frontier',
   };
 
   return config;

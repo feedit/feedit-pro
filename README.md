@@ -57,7 +57,7 @@ server {
 $ git clone https://github.com/feedit/feedit-pro.git
 $ npm i
 # start feedit service
-$ WEBHOOK_URL=xxx BASE_URL=https://your.site FEEDIT_ROOT_DIR=/usr/share/nginx/html npm run start
+$ npm run start
 ```
 
 ### Add rules

@@ -6,6 +6,8 @@ module.exports = options => {
   function Client(options) {
     this.gateway = options.gateway;
     this.accessToken = options.accessToken;
+    this.user = options.user;
+    this.repo = options.repo;
   }
 
   Client.prototype.invoke = async function(api, params) {
@@ -21,7 +23,7 @@ module.exports = options => {
   };
 
   Client.prototype.publicDoc = async function(params) {
-    return await this.invoke('/repos/xudafeng/technology-frontier/docs', {
+    return await this.invoke(`/repos/${this.user}/${this.repo}/docs`, {
       public: 1,
       ...params,
     });
