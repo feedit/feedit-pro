@@ -15,6 +15,10 @@
 
 > help to subscribe the tech blog you want
 
+## Watch Yuque
+
+Welcome watch my Yuque column and keep getting the latest knowledge: https://www.yuque.com/xudafeng/technology-frontier
+
 ## Features
 
 - IM Robot push
