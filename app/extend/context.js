@@ -225,7 +225,9 @@ module.exports = {
   resolveImage($, options) {
     $('img').each(function() {
       const src = $(this).attr('src');
-      $(this).attr('src', urlResolve(options.link, src));
+      if (options.link && src) {
+        $(this).attr('src', urlResolve(options.link, src));
+      }
     });
     return $;
   },
