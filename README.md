@@ -19,6 +19,8 @@
 
 Welcome watch my [Yuque](https://www.yuque.com/xudafeng/technology-frontier) column and keep getting the latest knowledge.
 
+![](https://wx2.sinaimg.cn/large/6d308bd9ly1fzbz27oe3dj21190u0h68.jpg)
+
 ## Features
 
 - IM Robot push
