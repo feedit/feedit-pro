@@ -98,6 +98,10 @@ module.exports = {
 $ DEBUG_MODE=true node ./app/schedule/visitor.js
 ```
 
+```bash
+$ npm run start:local
+```
+
 <!-- GITCONTRIBUTOR_START -->
 
 ## Contributors

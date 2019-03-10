@@ -30,10 +30,11 @@
   },
   "scripts": {
     "start": "egg-scripts start --port=8800 --daemon --title=egg-server-feedit-pro",
+    "start:local": "DEBUG=* DEV_ENABLE=true egg-scripts start --port=8800",
     "stop": "egg-scripts stop --title=egg-server-feedit-pro",
     "dev": "DEBUG_MODE=true egg-bin dev --port=8800",
     "debug": "egg-bin debug",
-    "test": "npm run lint -- --fix && npm run test-local",
+    "test": "npm run lint && npm run test-local",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
     "lint": "eslint . --fix",

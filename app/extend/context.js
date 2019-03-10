@@ -178,7 +178,7 @@ module.exports = {
       this.logger.warn(e.stack);
     }
     return content;
-  }
+  },
 
   async translateNode($) {
     const {
