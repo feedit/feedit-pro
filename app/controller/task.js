@@ -17,7 +17,7 @@ module.exports = async context => {
     const configFile = list[i];
     const siteId = path.basename(configFile).replace('.js', '');
     const config = require(configFile);
-    if (!config.enable) {
+    if (!config.enable || !config.devEnable) {
       continue;
     }
     context.logger.info(`task [${siteId}] start at: ${_.moment().format('YY-MM-DD HH:mm:ss')}`);
@@ -26,6 +26,6 @@ module.exports = async context => {
     } catch (e) {
       context.logger.warn(e.stack);
     }
-    context.logger.info(`task [${siteId}]   end at: ${_.moment().format('YY-MM-DD HH:mm:ss')}`);
+    context.logger.info(`task [${siteId}] end at: ${_.moment().format('YY-MM-DD HH:mm:ss')}`);
   }
 };

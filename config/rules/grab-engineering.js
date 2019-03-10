@@ -5,6 +5,7 @@ const cheerio = require('cheerio');
 
 module.exports = {
   enable: true,
+  devEnable: process.env.DEV_ENABLE,
   async run() {
     const url = 'https://engineering.grab.com/feed.xml';
     const siteId = path.basename(__filename).replace('.js', '');
@@ -14,7 +15,7 @@ module.exports = {
     first.siteId = siteId;
     first.logoUrl = 'https://feedit.github.io/feedit-pro/app/public/images/grab.jpg';
 
-    if (this.ctx.isExisted(first)) {
+    if (!process.env.DEV_ENABLE && this.ctx.isExisted(first)) {
       return;
     }
 

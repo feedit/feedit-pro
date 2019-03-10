@@ -19,6 +19,8 @@ const pkg = require('../../package');
 
 const { DEBUG_MODE } = process.env;
 
+const IGNORE_STR_REG = /[\”\“\s\,\!\|\~\`\(\)\#\$\%\^\&\*\{\}\:\;\"\L\<\>\?]/g;
+
 module.exports = {
   genHtmlFileDir(rootDir, options) {
     const distPath = path.join(rootDir, pkg.name, options.siteId, options._title);
@@ -33,7 +35,9 @@ module.exports = {
   },
 
   async archiveToDir($, options) {
-    options._title = options.title.replace(/\s+/g, '-');
+    options._title = options.title
+      .replace(IGNORE_STR_REG, '-')
+      .replace(/(-)\1+/g, '$1');
     options.pubDate = _.moment(options.pubDate).format('YY-MM-DD HH:mm:ss');
     const {
       rootDir,
@@ -54,14 +58,24 @@ module.exports = {
     }, 2, null));
     this.logger.info(`file: ${jsonFile}`);
 
+    options.title = await this.translate(options.title);
+
     // archive to yuque
     try {
       const body = this.yuqueBeautify($, options);
-      await this.app.yuqueClient.publicDoc({
+      const params = {
         title: options.title,
         slug: options._title,
         body,
-      });
+        cover: options.coverUrl || options.logoUrl,
+      };
+      const res = await this.app.yuqueClient.publicDoc(params);
+      if (res.statusCode !== 200) {
+        const error = new Error('YUQUE_PUBLIC_ERROR');
+        error.statusCode = res.statusCode;
+        error.params = params;
+        throw error;
+      }
     } catch (e) {
       this.logger.warn(e);
     }
@@ -83,7 +97,7 @@ module.exports = {
       const messageUrl = `${site.baseUrl}/${options.siteId}/${encodeURIComponent(options._title)}/`;
 
       const link = {
-        title: options._title.replace(/-/g, ' '),
+        title: options.title,
         text: `${options.siteId.replace(/-/g, ' ')}\n${options.pubDate}`,
         picUrl: options.logoUrl,
         messageUrl,
@@ -99,7 +113,9 @@ module.exports = {
       rootDir,
     } = this.app.config.feedit;
     if (typeof options.title === 'string') {
-      options._title = options.title.replace(/\s+/g, '-');
+      options._title = options.title
+        .replace(IGNORE_STR_REG, '-')
+        .replace(/(-)\1+/g, '$1');
       const htmlFile = this.genHtmlFileDir(rootDir, options);
       const hasFile = _.isExistedFile(htmlFile);
       if (hasFile) {
@@ -160,6 +176,23 @@ module.exports = {
     return xml2map.tojson(xml);
   },
 
+  async translate(content) {
+    const {
+      autoTranslation,
+    } = this.app.config.feedit;
+    try {
+      if (autoTranslation) {
+        return (await translate(content, {
+          from: 'en',
+          to: 'zh-CN',
+        })).text;
+      }
+    } catch (e) {
+      this.logger.warn(e.stack);
+    }
+    return content;
+  },
+
   async translateNode($) {
     const {
       autoTranslation,
@@ -174,16 +207,7 @@ module.exports = {
         let text = '';
         if (content && content.length > 100) {
           if (autoTranslation) {
-            try {
-              await this.helper.sleep(5000);
-              text = (await translate(content, {
-                from: 'en',
-                to: 'zh-CN',
-              })).text;
-              this.logger.info(text);
-            } catch (e) {
-              this.logger.warn(e.stack);
-            }
+            text = await this.translate(content);
             node.html(`
             <div class="feedit-item">
               <span>${content}</span>
