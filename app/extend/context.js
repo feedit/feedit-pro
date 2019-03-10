@@ -54,6 +54,8 @@ module.exports = {
     }, 2, null));
     this.logger.info(`file: ${jsonFile}`);
 
+    options.title = await this.translate(options.title);
+
     // archive to yuque
     try {
       const body = this.yuqueBeautify($, options);
@@ -61,6 +63,7 @@ module.exports = {
         title: options.title,
         slug: options._title,
         body,
+        cover: options.logoUrl,
       });
     } catch (e) {
       this.logger.warn(e);
@@ -83,7 +86,7 @@ module.exports = {
       const messageUrl = `${site.baseUrl}/${options.siteId}/${encodeURIComponent(options._title)}/`;
 
       const link = {
-        title: options._title.replace(/-/g, ' '),
+        title: options.title,
         text: `${options.siteId.replace(/-/g, ' ')}\n${options.pubDate}`,
         picUrl: options.logoUrl,
         messageUrl,
@@ -160,6 +163,24 @@ module.exports = {
     return xml2map.tojson(xml);
   },
 
+  async translate(content) {
+    const {
+      autoTranslation,
+    } = this.app.config.feedit;
+    try {
+      if (autoTranslation) {
+        await this.helper.sleep(5000);
+        return (await translate(content, {
+          from: 'en',
+          to: 'zh-CN',
+        })).text;
+      }
+    } catch (e) {
+      this.logger.warn(e.stack);
+    }
+    return content;
+  }
+
   async translateNode($) {
     const {
       autoTranslation,
@@ -176,10 +197,7 @@ module.exports = {
           if (autoTranslation) {
             try {
               await this.helper.sleep(5000);
-              text = (await translate(content, {
-                from: 'en',
-                to: 'zh-CN',
-              })).text;
+              text = await this.translate(content);
               this.logger.info(text);
             } catch (e) {
               this.logger.warn(e.stack);

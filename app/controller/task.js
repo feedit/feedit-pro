@@ -26,6 +26,6 @@ module.exports = async context => {
     } catch (e) {
       context.logger.warn(e.stack);
     }
-    context.logger.info(`task [${siteId}]   end at: ${_.moment().format('YY-MM-DD HH:mm:ss')}`);
+    context.logger.info(`task [${siteId}] end at: ${_.moment().format('YY-MM-DD HH:mm:ss')}`);
   }
 };
