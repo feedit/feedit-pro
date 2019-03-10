@@ -59,12 +59,13 @@ module.exports = {
     // archive to yuque
     try {
       const body = this.yuqueBeautify($, options);
-      await this.app.yuqueClient.publicDoc({
+      const res = await this.app.yuqueClient.publicDoc({
         title: options.title,
         slug: options._title,
         body,
         cover: options.logoUrl,
       });
+      this.logger.info('yuque success', res);
     } catch (e) {
       this.logger.warn(e);
     }
