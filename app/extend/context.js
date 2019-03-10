@@ -169,7 +169,6 @@ module.exports = {
     } = this.app.config.feedit;
     try {
       if (autoTranslation) {
-        await this.helper.sleep(5000);
         return (await translate(content, {
           from: 'en',
           to: 'zh-CN',
@@ -195,13 +194,7 @@ module.exports = {
         let text = '';
         if (content && content.length > 100) {
           if (autoTranslation) {
-            try {
-              await this.helper.sleep(5000);
-              text = await this.translate(content);
-              this.logger.info(text);
-            } catch (e) {
-              this.logger.warn(e.stack);
-            }
+            text = await this.translate(content);
             node.html(`
             <div class="feedit-item">
               <span>${content}</span>
