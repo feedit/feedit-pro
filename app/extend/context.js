@@ -35,7 +35,9 @@ module.exports = {
   },
 
   async archiveToDir($, options) {
-    options._title = options.title.replace(IGNORE_STR_REG, '-');
+    options._title = options.title
+      .replace(IGNORE_STR_REG, '-')
+      .replace(/(-)\1+/g, '$1');
     options.pubDate = _.moment(options.pubDate).format('YY-MM-DD HH:mm:ss');
     const {
       rootDir,
@@ -111,7 +113,9 @@ module.exports = {
       rootDir,
     } = this.app.config.feedit;
     if (typeof options.title === 'string') {
-      options._title = options.title.replace(IGNORE_STR_REG, '-');
+      options._title = options.title
+        .replace(IGNORE_STR_REG, '-')
+        .replace(/(-)\1+/g, '$1');
       const htmlFile = this.genHtmlFileDir(rootDir, options);
       const hasFile = _.isExistedFile(htmlFile);
       if (hasFile) {
