@@ -19,6 +19,8 @@ const pkg = require('../../package');
 
 const { DEBUG_MODE } = process.env;
 
+const IGNORE_STR_REG = /[\,\!\|\~\`\(\)\#\$\%\^\&\*\{\}\:\;\"\L\<\>\?]/g;
+
 module.exports = {
   genHtmlFileDir(rootDir, options) {
     const distPath = path.join(rootDir, pkg.name, options.siteId, options._title);
@@ -33,7 +35,7 @@ module.exports = {
   },
 
   async archiveToDir($, options) {
-    options._title = options.title.replace(/\s+/g, '-');
+    options._title = options.title.replace(IGNORE_STR_REG, '-');
     options.pubDate = _.moment(options.pubDate).format('YY-MM-DD HH:mm:ss');
     const {
       rootDir,
@@ -63,13 +65,13 @@ module.exports = {
         title: options.title,
         slug: options._title,
         body,
-        cover: options.logoUrl,
+        cover: options.coverUrl || options.logoUrl,
       };
       const res = await this.app.yuqueClient.publicDoc(params);
       if (res.statusCode !== 200) {
         const error = new Error('YUQUE_PUBLIC_ERROR');
-        error.params = params;
         error.statusCode = res.statusCode;
+        error.params = params;
         throw error;
       }
     } catch (e) {
@@ -109,7 +111,7 @@ module.exports = {
       rootDir,
     } = this.app.config.feedit;
     if (typeof options.title === 'string') {
-      options._title = options.title.replace(/\s+/g, '-');
+      options._title = options.title.replace(IGNORE_STR_REG, '-');
       const htmlFile = this.genHtmlFileDir(rootDir, options);
       const hasFile = _.isExistedFile(htmlFile);
       if (hasFile) {
