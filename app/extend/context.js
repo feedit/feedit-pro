@@ -59,13 +59,19 @@ module.exports = {
     // archive to yuque
     try {
       const body = this.yuqueBeautify($, options);
-      const res = await this.app.yuqueClient.publicDoc({
+      const params = {
         title: options.title,
         slug: options._title,
         body,
         cover: options.logoUrl,
-      });
-      this.logger.info('yuque success', res);
+      };
+      const res = await this.app.yuqueClient.publicDoc(params);
+      if (res.statusCode !== 200) {
+        const error = new Error('YUQUE_PUBLIC_ERROR');
+        error.params = params;
+        error.statusCode = res.statusCode;
+        throw error;
+      }
     } catch (e) {
       this.logger.warn(e);
     }
