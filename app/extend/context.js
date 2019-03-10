@@ -19,7 +19,7 @@ const pkg = require('../../package');
 
 const { DEBUG_MODE } = process.env;
 
-const IGNORE_STR_REG = /[\,\!\|\~\`\(\)\#\$\%\^\&\*\{\}\:\;\"\L\<\>\?]/g;
+const IGNORE_STR_REG = /[\”\“\s\,\!\|\~\`\(\)\#\$\%\^\&\*\{\}\:\;\"\L\<\>\?]/g;
 
 module.exports = {
   genHtmlFileDir(rootDir, options) {
