@@ -17,7 +17,11 @@ module.exports = async context => {
     const configFile = list[i];
     const siteId = path.basename(configFile).replace('.js', '');
     const config = require(configFile);
-    if (!config.enable || !config.devEnable) {
+    if (process.env.DEV_ENABLE) {
+      if (!config.devEnable) {
+        continue;
+      }
+    } else if (!config.enable) {
       continue;
     }
     context.logger.info(`task [${siteId}] start at: ${_.moment().format('YY-MM-DD HH:mm:ss')}`);
